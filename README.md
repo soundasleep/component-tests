@@ -28,7 +28,7 @@ Now create an instance of `\ComponentTests\ComponentTest` to define which paths
 to search (and optionally exclude):
 
 ```
-class FailingTest extends \ComponentTests\ComponentTest {
+class MyComponentTest extends \ComponentTests\ComponentTest {
 
   function getRoots() {
     return array(__DIR__ . "/..");
