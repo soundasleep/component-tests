@@ -19,4 +19,22 @@ class FailingTest extends ComponentTest {
     $this->fail("Expected an assertion failure");
   }
 
+  function testPHPLint() {
+    try {
+      parent::testPHPLint();
+    } catch (\PHPUnit_Framework_ExpectationFailedException $e) {
+      // expected
+      return;
+    }
+
+    $this->fail("Expected an assertion failure");
+  }
+
+  /**
+   * @return true if {@link #testPHPLint()} error should be printed to the console
+   */
+  function printPHPLintErrors() {
+    return false;
+  }
+
 }

@@ -9,8 +9,12 @@ abstract class ComponentTest extends \PHPUnit_Framework_TestCase {
    */
   abstract function getRoots();
 
+  /**
+   * May be extended by child classes to define a list of path
+   * names that will be excluded by {@link #iterateOver()}.
+   */
   function getExcludes() {
-    return array();
+    return array("/vendor/");
   }
 
   function iterateOver($root, $extension, $callback) {
@@ -33,6 +37,10 @@ abstract class ComponentTest extends \PHPUnit_Framework_TestCase {
     }
   }
 
+  /**
+   * Should the given (absolute or relative) path be excluded based
+   * on {@link #getExcludes()}?
+   */
   function shouldExclude($path) {
     foreach ($this->getExcludes() as $pattern) {
       if (strpos($path, $pattern) !== false) {
@@ -49,6 +57,30 @@ abstract class ComponentTest extends \PHPUnit_Framework_TestCase {
     foreach ($this->getRoots() as $root) {
       $this->iterateOver($root, ".json", function($filename) {
         $this->assertNotNull(json_decode(file_get_contents($filename)), "File '$filename' was not valid JSON");
+      });
+    }
+  }
+
+  /**
+   * @return true if {@link #testPHPLint()} error should be printed to the console
+   */
+  function printPHPLintErrors() {
+    return true;
+  }
+
+  /**
+   * Test that all PHP files are valid.
+   */
+  function testPHPLint() {
+    foreach ($this->getRoots() as $root) {
+      $this->iterateOver($root, ".php", function($filename) {
+        $return = 0;
+        $output_array = array();
+        $output = exec("php -l " . escapeshellarg($filename) . " 2>&1", $output_array, $return);
+        if ($return !== 0 && $this->printPHPLintErrors()) {
+          echo "[$filename]\n" . implode("\n", $output_array);
+        }
+        $this->assertFalse(!!$return, "File '$filename' failed lint: '$output' ($return)");
       });
     }
   }

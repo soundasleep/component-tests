@@ -12,7 +12,7 @@ class ComponentTestTest extends ComponentTest {
    * Test the actual implementation of the testing class.
    */
   function getExcludes() {
-    return array("/resources/");
+    return array("/resources/", "/vendor/");
   }
 
   /**
