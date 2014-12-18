@@ -37,4 +37,22 @@ class FailingTest extends ComponentTest {
     return false;
   }
 
+  function testComposerJSONSchema() {
+    try {
+      parent::testComposerJSONSchema();
+    } catch (\PHPUnit_Framework_ExpectationFailedException $e) {
+      // expected
+      return;
+    }
+
+    $this->fail("Expected an assertion failure");
+  }
+
+  /**
+   * @return true if {@link #testComposerJSONSchema()} error should be printed to the console
+   */
+  function printComposerJSONSchemaErrors() {
+    return false;
+  }
+
 }

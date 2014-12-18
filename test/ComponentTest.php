@@ -80,7 +80,52 @@ abstract class ComponentTest extends \PHPUnit_Framework_TestCase {
         if ($return !== 0 && $this->printPHPLintErrors()) {
           echo "[$filename]\n" . implode("\n", $output_array);
         }
-        $this->assertFalse(!!$return, "File '$filename' failed lint: '$output' ($return)");
+        $this->assertFalse(!!$return, "File '$filename' failed PHP lint: '$output' ($return)");
+      });
+    }
+  }
+
+  /**
+   * @return true if {@link #testComposerJSONSchema()} error should be printed to the console
+   */
+  function printComposerJSONSchemaErrors() {
+    return true;
+  }
+
+  /**
+   * Test that all `composer.json` files are valid.
+   * This is nicer over `composer validate` because we don't want to deal with warnings;
+   * just critical errors.
+   */
+  function testComposerJSONSchema() {
+    foreach ($this->getRoots() as $root) {
+      $this->iterateOver($root, "composer.json", function($filename) {
+        // Get the schema and data as objects
+        $retriever = new \JsonSchema\Uri\UriRetriever;
+        $schema = $retriever->retrieve(__DIR__ . "/../composer-schema.json");
+        $data = json_decode(file_get_contents($filename));
+
+        // // If you use $ref or if you are unsure, resolve those references here
+        // // This modifies the $schema object
+        // $refResolver = new JsonSchema\RefResolver($retriever);
+        // $refResolver->resolve($schema, 'file://' . __DIR__);
+
+        // Validate
+        $validator = new \JsonSchema\Validator();
+        $validator->check($data, $schema);
+
+        $message = "(no message)";
+        $errors = $validator->getErrors();
+        if (count($errors) > 0) {
+          $message = trim($errors[0]['property'] . " " . $errors[0]['message']);
+        }
+        if (!$validator->isValid() && $this->printComposerJSONSchemaErrors()) {
+          foreach ($validator->getErrors() as $error) {
+            echo sprintf("[%s] %s\n", $error['property'], $error['message']);
+          }
+        }
+
+        $this->assertTrue($validator->isValid(), "File '$filename' was not valid Composer JSON according to composer-schema.json: $message");
       });
     }
   }
