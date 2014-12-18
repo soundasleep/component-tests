@@ -160,14 +160,24 @@ abstract class ComponentTest extends \PHPUnit_Framework_TestCase {
             $this->assertTrue(substr($path, 0, 1) == "/", "Included path '$path' in '$filename' did not start with /");
 
             // get relative dir
-            $bits = explode("/", $filename);
-            unset($bits[count($bits)-1]); // remove filename
-            $resolved = __DIR__ . "/../" . implode("/", $bits) . $path;
+            $resolved = $this->getResolvedPath($filename, $path);
             $this->assertTrue(file_exists($resolved), "Included path '$path' in '$filename' was not found: [$resolved]");
           }
         }
       });
     }
+  }
+
+  /**
+   * @param $filename absolute path of the file we're currently looking at
+   * @param $path the relative path referenced in the include
+   */
+  function getResolvedPath($filename, $path) {
+    // if $filename is always absolute, then we can just use the $filename without
+    // filename + the relative path
+    $bits = explode("/", $filename);
+    unset($bits[count($bits)-1]);
+    return implode("/", $bits) . $path;
   }
 
 }
