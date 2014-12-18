@@ -55,4 +55,26 @@ class FailingTest extends ComponentTest {
     return false;
   }
 
+  function testPHPRequiresUseDir() {
+    try {
+      parent::testPHPRequiresUseDir();
+    } catch (\PHPUnit_Framework_ExpectationFailedException $e) {
+      // expected
+      return;
+    }
+
+    $this->fail("Expected an assertion failure");
+  }
+
+  function testPHPRequiresExist() {
+    try {
+      parent::testPHPRequiresExist();
+    } catch (\PHPUnit_Framework_ExpectationFailedException $e) {
+      // expected
+      return;
+    }
+
+    $this->fail("Expected an assertion failure");
+  }
+
 }

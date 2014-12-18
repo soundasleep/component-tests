@@ -130,4 +130,44 @@ abstract class ComponentTest extends \PHPUnit_Framework_TestCase {
     }
   }
 
+  /**
+   * Test that all PHP files that use `require()` or `include()`
+   * use __DIR__ to prevent relative include problems.
+   */
+  function testPHPRequiresUseDir() {
+    foreach ($this->getRoots() as $root) {
+      $this->iterateOver($root, ".php", function($filename) {
+        $s = file_get_contents($filename);
+        if (preg_match('#\n[^*/]*((require|require_once|include|include_once|file_exists))\(("|\')[^/]+#m', $s, $matches)) {
+          $this->assertFalse(true, "Found " . $matches[1] . "() that did not use __DIR__ in '" . $filename . "': '" . trim($matches[0]) . "'");
+        }
+      });
+    }
+  }
+  /**
+   * Test that all PHP files that use `require()` or `include()`
+   * exist.
+   */
+  function testPHPRequiresExist() {
+    foreach ($this->getRoots() as $root) {
+      $this->iterateOver($root, ".php", function($filename) {
+        $s = file_get_contents($filename);
+        if (preg_match_all('#\n[^*/]*(require|require_once|include|include_once)\(__DIR__ . ("|\')([^"\']+)("|\')#m', $s, $matches_array, PREG_SET_ORDER)) {
+          foreach ($matches_array as $matches) {
+            $path = $matches[3];
+
+            // path should start with /
+            $this->assertTrue(substr($path, 0, 1) == "/", "Included path '$path' in '$filename' did not start with /");
+
+            // get relative dir
+            $bits = explode("/", $filename);
+            unset($bits[count($bits)-1]); // remove filename
+            $resolved = __DIR__ . "/../" . implode("/", $bits) . $path;
+            $this->assertTrue(file_exists($resolved), "Included path '$path' in '$filename' was not found: [$resolved]");
+          }
+        }
+      });
+    }
+  }
+
 }
