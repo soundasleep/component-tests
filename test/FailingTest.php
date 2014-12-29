@@ -8,6 +8,14 @@ class FailingTest extends ComponentTest {
     return array(__DIR__ . "/../resources/failures");
   }
 
+  /**
+   * Don't exclude anything, especially /vendor/ paths!
+   * Causes false positives on Windows
+   */
+  function getExcludes() {
+    return array();
+  }
+
   function testJSONLint() {
     try {
       parent::testJSONLint();

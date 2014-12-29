@@ -8,4 +8,12 @@ class SuccessfulTest extends ComponentTest {
     return array(__DIR__ . "/../resources/successes");
   }
 
+  /**
+   * Don't exclude anything, especially /vendor/ paths!
+   * Causes false positives on Windows
+   */
+  function getExcludes() {
+    return array();
+  }
+
 }
