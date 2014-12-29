@@ -99,7 +99,7 @@ abstract class ComponentTest extends \PHPUnit_Framework_TestCase {
   function _testComposerJSONSchema($filename) {
     // Get the schema and data as objects
     $retriever = new \JsonSchema\Uri\UriRetriever;
-    $schema = $retriever->retrieve(__DIR__ . "/../composer-schema.json");
+    $schema = $retriever->retrieve("file://" . __DIR__ . "/../composer-schema.json");
     $data = json_decode(file_get_contents($filename));
 
     // // If you use $ref or if you are unsure, resolve those references here
