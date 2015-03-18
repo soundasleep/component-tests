@@ -40,6 +40,7 @@ class MyComponentTest extends \ComponentTests\ComponentTest {
   function getExcludes() {
     return array("/resources/", "/vendor/");
   }
+}
 ```
 
 You can now run this test through your normal `phpunit`.
