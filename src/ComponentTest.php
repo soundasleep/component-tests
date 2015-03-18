@@ -136,6 +136,25 @@ abstract class ComponentTest extends \PHPUnit_Framework_TestCase {
     }
   }
 
+  function _testComposerJSONPSR4($filename) {
+    $json = json_decode(file_get_contents($filename), true /* assoc */);
+    if (isset($json['autoload']) && isset($json['autoload']['psr-4'])) {
+      foreach ($json['autoload']['psr-4'] as $namespace => $path) {
+        $this->assertStringEndsWith("\\", $namespace, "PSR-4 namespace '$namespace' must end with namespace operator");
+      }
+    }
+  }
+
+  /**
+   * Test that all PSR-4 autoload definitions end with the Namespace separator.
+   * Prevents 'A non-empty PSR-4 prefix must end with a namespace separator.' error.
+   */
+  function testComposerJSONPSR4() {
+    foreach ($this->getRoots() as $root) {
+      $this->iterateOver($root, "composer.json", array($this, '_testComposerJSONPSR4'));
+    }
+  }
+
   function _testPHPRequiresUseDir($filename) {
     $s = file_get_contents($filename);
     if (preg_match('#\n[^*/]*((require|require_once|include|include_once|file_exists))\(("|\')[^/]+#m', $s, $matches)) {
