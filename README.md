@@ -1,4 +1,4 @@
-component-tests
+component-tests [![Build Status](https://travis-ci.org/soundasleep/component-tests.svg?branch=master)](https://travis-ci.org/soundasleep/component-tests)
 ===============
 
 Common Composer and PHP component lint and validation tests.
@@ -27,7 +27,7 @@ and run `composer update` to install it into your project:
 Now create an instance of `\ComponentTests\ComponentTest` to define which paths
 to search (and optionally exclude):
 
-```
+```php
 class MyComponentTest extends \ComponentTests\ComponentTest {
 
   function getRoots() {
