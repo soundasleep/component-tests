@@ -14,7 +14,7 @@ abstract class ComponentTest extends \PHPUnit_Framework_TestCase {
    * names that will be excluded by {@link #iterateOver()}.
    */
   function getExcludes() {
-    return array("/vendor/");
+    return array("/vendor/", "/.git/", "/.svn/");
   }
 
   function iterateOver($root, $extension, $callback) {
