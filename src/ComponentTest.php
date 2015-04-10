@@ -44,6 +44,11 @@ abstract class ComponentTest extends \PHPUnit_Framework_TestCase {
   function shouldExclude($path) {
     foreach ($this->getExcludes() as $pattern) {
       if (strpos($path, $pattern) !== false) {
+        // ignore substrings
+        return true;
+      }
+      if (substr($path . "/", -strlen($pattern)) === $pattern) {
+        // ignore folders whose content would all be ignored _anyway_
         return true;
       }
     }
