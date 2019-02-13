@@ -19,7 +19,7 @@ and run `composer update` to install it into your project:
 ```json
 {
   "require": {
-    "soundasleep/component-tests": "dev-master"
+    "soundasleep/component-tests": "~0.2"
   }
 }
 ```
@@ -47,4 +47,4 @@ You can now run this test through your normal `phpunit`.
 
 ## Tests
 
-This component is tested itself; install the composer dev requirements and run `vendor/bin/phpunit`.
+This component is tested itself; install the composer requirements with `composer install` and run `vendor/bin/phpunit`.
