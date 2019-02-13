@@ -2,7 +2,7 @@
 
 namespace ComponentTests;
 
-abstract class ComponentTest extends \PHPUnit_Framework_TestCase {
+abstract class ComponentTest extends \PHPUnit\Framework\TestCase {
 
   /**
    * Get a list of paths to search over, e.g. __DIR__.

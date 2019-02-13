@@ -19,7 +19,7 @@ class FailingTest extends ComponentTest {
   function testJSONLint() {
     try {
       parent::testJSONLint();
-    } catch (\PHPUnit_Framework_ExpectationFailedException $e) {
+    } catch (\PHPUnit\Framework\ExpectationFailedException $e) {
       // expected
       return;
     }
@@ -30,7 +30,7 @@ class FailingTest extends ComponentTest {
   function testPHPLint() {
     try {
       parent::testPHPLint();
-    } catch (\PHPUnit_Framework_ExpectationFailedException $e) {
+    } catch (\PHPUnit\Framework\ExpectationFailedException $e) {
       // expected
       return;
     }
@@ -48,7 +48,7 @@ class FailingTest extends ComponentTest {
   function testComposerJSONSchema() {
     try {
       parent::testComposerJSONSchema();
-    } catch (\PHPUnit_Framework_ExpectationFailedException $e) {
+    } catch (\PHPUnit\Framework\ExpectationFailedException $e) {
       // expected
       return;
     }
@@ -66,7 +66,7 @@ class FailingTest extends ComponentTest {
   function testPHPRequiresUseDir() {
     try {
       parent::testPHPRequiresUseDir();
-    } catch (\PHPUnit_Framework_ExpectationFailedException $e) {
+    } catch (\PHPUnit\Framework\ExpectationFailedException $e) {
       // expected
       return;
     }
@@ -77,7 +77,7 @@ class FailingTest extends ComponentTest {
   function testPHPRequiresExist() {
     try {
       parent::testPHPRequiresExist();
-    } catch (\PHPUnit_Framework_ExpectationFailedException $e) {
+    } catch (\PHPUnit\Framework\ExpectationFailedException $e) {
       // expected
       return;
     }
